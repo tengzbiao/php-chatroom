@@ -6,3 +6,7 @@
 
 #### 使用
 - php index.php
+
+#### 截图
+
+![image](https://github.com/tengzbiao/php-chatroom/blob/master/demo.png?raw=true)
