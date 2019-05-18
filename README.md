@@ -9,4 +9,4 @@
 
 #### 截图
 
-![image](https://github.com/tengzbiao/php-chatroom/blob/master/demo.png?raw=true)
+![image](https://github.com/tengzbiao/php-chatroom/blob/master/room.png?raw=true)
