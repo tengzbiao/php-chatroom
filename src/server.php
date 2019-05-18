@@ -10,6 +10,8 @@ class User
 {
     public $socket;
     public $id;
+    public $nickname;
+    public $portrait;
 
     function __construct($id, $socket)
     {
@@ -46,7 +48,7 @@ Class Server
     public function run()
     {
         $this->stdout('socket listen ' . $this->host . ':' . $this->port);
-        exec('open ./index.html');
+        exec('open ../login.html');
         while (true) {
             $read = $this->sockets;
             $write = $except = null;
@@ -94,6 +96,14 @@ Class Server
         //通过socket获取数据执行handshake
         $header = socket_read($client, 1024);
         $this->performHandshaking($header, $client, $this->host, $this->port);
+
+        $res = [
+            'command' => 'connect',
+            'body'    => [
+                'user_id' => $user->id
+            ]
+        ];
+        $this->send($user, $res);
     }
 
     /**
@@ -132,14 +142,24 @@ Class Server
             return;
         }
         switch ($data['command']) {
-            case 'login' :
+            case 'join' :
                 $user->nickname = $data['body']['nickname'];
+                $user->portrait = $data['body']['portrait'];
                 $res = [
-                    'command' => 'login',
+                    'command' => 'join',
                     'body'    => [
-                        'message'  => '欢迎加入聊天室',
                         'nickname' => $user->nickname,
+                        'portrait' => $user->portrait,
                         'user_id'  => $user->id,
+                    ],
+                ];
+                $this->broadcast($res);
+                break;
+            case 'online_users':
+                $res = [
+                    'command' => 'online_users',
+                    'body'    => [
+                        'data' => $this->getOnlineUsers(),
                     ],
                 ];
                 $this->send($user, $res);
@@ -149,17 +169,16 @@ Class Server
                     'command' => 'message',
                     'body'    => $data['body'] + [
                             'user_id'  => $user->id,
-                            'nickname' => $user->nickname
+                            'nickname' => $user->nickname,
+                            'portrait' => $user->portrait,
+                            'time'     => date('H:', time())
                         ]
                 ];
                 $toUserID = $data['body']['to_user'] ?? '';
                 if (!empty($toUserID)) {
                     $toUser = $this->users[$toUserID];
                     if ($toUserID != $user->id) {
-                        $message = $res['body']['message'];
-                        $res['body']['message'] = '@' . $toUser->nickname . $message;
                         $this->send($user, $res);
-                        $res['body']['message'] = '对你说，' . $message;
                         $this->send($toUser, $res);
                     }
                     return;
@@ -214,6 +233,16 @@ Class Server
             $this->send($user, $msg);
         }
         return true;
+    }
+
+    protected function getOnlineUsers()
+    {
+        $users = [];
+        foreach ($this->users as $user) {
+            $tmp = ['user_id' => $user->id, 'portrait' => $user->portrait, 'nickname' => $user->nickname];
+            $users[] = $tmp;
+        }
+        return $users;
     }
 
     /**

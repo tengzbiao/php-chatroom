@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/rolling/css/rolling.css">
+    <link rel="stylesheet" href="./assets/stylesheets/style.css">
+    <script type="text/javascript" src="./assets/javascripts/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="./assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./assets/rolling/js/rolling.js"></script>
+    <script type="text/javascript" src="./assets/javascripts/Public.js"></script>
+</head>
+<body class="room">
+<div class="scrollbar-macosx">
+    <div class="header">
+        <ul class="topnavlist">
+            <li class="userlist">
+                <a><span class="glyphicon glyphicon-th-list"></span>用户列表</a>
+                <div class="popover fade bottom in">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title" id="online_num" data-num=0>在线用户0人</h3>
+                    <div class="popover-content scrollbar-macosx">
+                        <ul id="online_users">
+
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="clapboard hidden"></div>
+    </div>
+    <div class="main container">
+        <div class="col-md-12">
+            <ul class="chat_info" id="chat_info">
+
+            </ul>
+        </div>
+    </div>
+    <div class="input">
+        <div class="center">
+            <div class="tools"></div>
+            <div class="text">
+                <div class="col-xs-10 col-sm-11">
+                    <input id="msg" type="text" class="form-control" placeholder="输入聊天信息...">
+                </div>
+                <div class="col-xs-2 col-sm-1">
+                    <a id="subxx" role="button"><span class="glyphicon glyphicon-share-alt"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
