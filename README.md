@@ -5,7 +5,7 @@
 - 支持群聊和私聊
 
 #### 使用
-- php index.php
+- php server.php
 
 #### 截图
 

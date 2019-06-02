@@ -1,26 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tengzbiao
- * Date: 2019/5/12
- * Time: 下午6:58
- */
+header("Content-Type: text/html;charset=utf-8");
+ini_set('memory_limit', '500M');
+date_default_timezone_set("PRC");
+set_time_limit(0);
+error_reporting(0);
 
-class User
-{
-    public $socket;
-    public $id;
-    public $nickname;
-    public $portrait;
+require_once(__DIR__ . '/server.php');
+require_once(__DIR__ . '/user.php');
 
-    function __construct($id, $socket)
-    {
-        $this->id = $id;
-        $this->socket = $socket;
-    }
-}
+$server = new Server('0.0.0.0', '8888');
+$server->run();
 
-Class Server
+class Server
 {
     protected $host;
     protected $port;
@@ -142,7 +133,7 @@ Class Server
             return;
         }
         switch ($data['command']) {
-            case 'join' :
+            case 'join':
                 $user->nickname = $data['body']['nickname'];
                 $user->portrait = $data['body']['portrait'];
                 $res = [
@@ -164,7 +155,7 @@ Class Server
                 ];
                 $this->send($user, $res);
                 break;
-            case 'message' :
+            case 'message':
                 $res = [
                     'command' => 'message',
                     'body'    => $data['body'] + [
@@ -185,7 +176,7 @@ Class Server
                 }
                 $this->broadcast($res);
                 break;
-            default :
+            default:
                 break;
         }
     }
@@ -298,13 +289,15 @@ Class Server
     {
         $b1 = 0x80 | (0x1 & 0x0f);
         $length = strlen($text);
+        $header = '';
 
-        if ($length <= 125)
+        if ($length <= 125) {
             $header = pack('CC', $b1, $length);
-        elseif ($length > 125 && $length < 65536)
+        } elseif ($length > 125 && $length < 65536) {
             $header = pack('CCn', $b1, 126, $length);
-        elseif ($length >= 65536)
+        } elseif ($length >= 65536) {
             $header = pack('CCNN', $b1, 127, $length);
+        }
         return $header . $text;
     }
 
