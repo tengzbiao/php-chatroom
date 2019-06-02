@@ -1,15 +1,6 @@
 <?php
-header("Content-Type: text/html;charset=utf-8");
-ini_set('memory_limit', '500M');
-date_default_timezone_set("PRC");
-set_time_limit(0);
-error_reporting(0);
 
-require_once(__DIR__ . '/server.php');
-require_once(__DIR__ . '/user.php');
-
-$server = new Server('0.0.0.0', '8888');
-$server->run();
+namespace App;
 
 class Server
 {
@@ -39,7 +30,7 @@ class Server
     public function run()
     {
         $this->stdout('socket listen ' . $this->host . ':' . $this->port);
-        exec('open ../login.html');
+        exec('open login.html');
         while (true) {
             $read = $this->sockets;
             $write = $except = null;
@@ -162,7 +153,7 @@ class Server
                             'user_id'  => $user->id,
                             'nickname' => $user->nickname,
                             'portrait' => $user->portrait,
-                            'time'     => date('H:', time())
+                            'time'     => date('H:i', time())
                         ]
                 ];
                 $toUserID = $data['body']['to_user'] ?? '';

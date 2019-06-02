@@ -1,0 +1,16 @@
+{
+  "name": "tengzbiao/php-chatroom",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "tengzbiao",
+      "email": "tengzbiao@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+        "App\\": "src/"
+    }
+  }
+}
